@@ -12,9 +12,8 @@ function getUUID4() {
 async function roomCreate(req, res) {
     try {
         // const { userId, type, tag, username, phone, date, time, room } = req.body;
-        const { userId, type, hostUserID, clientUserID, startDateTime, endDateTime, status } = req.body;
+        const {  type, hostUserID, clientUserID, startDateTime, endDateTime, status } = req.body;
         const data = new Room({
-            userId: userId,
             type: type,
             hostUserID: hostUserID,
             clientUserID: clientUserID,
@@ -33,7 +32,7 @@ async function roomCreate(req, res) {
 
 async function getUserRole(req, res) {
     try {
-        const data = await Room.find({ room: req.params.room });
+        const data = await Room.find({ room: req.params.room, status: "scheduled" });
         // res.json(req.params.userId );
         if (data.length === 0) {
             console.error('Room Does Not Exist');
@@ -62,26 +61,26 @@ async function getUserRole(req, res) {
 
 async function roomFindBy(req, res) {
     try {
-        const data = await Room.find({ userId: req.params.userId });
+        const data = await Room.find({ _id: req.params._id });
         res.json(data);
     } catch (error) {
-        console.error('Room findByUserId error', error);
+        console.error('Room findByObjectId error', error);
         res.status(400).json({ message: error.message });
     }
 }
 
-async function roomDeleteFindBy(req, res) {
-    try {
-        const data = await Room.deleteMany({ userId: req.params.userId });
-        console.log('deleAllRooms data', data);
-        data.deletedCount > 0
-            ? res.json({ message: `${data.deletedCount} documents has been deleted` })
-            : res.json({ message: 'No documents found' });
-    } catch (error) {
-        console.error('Room findByUserId delete error', error);
-        res.status(400).json({ message: error.message });
-    }
-}
+// async function roomDeleteFindBy(req, res) {
+//     try {
+//         const data = await Room.deleteMany({ userId: req.params.userId });
+//         console.log('deleAllRooms data', data);
+//         data.deletedCount > 0
+//             ? res.json({ message: `${data.deletedCount} documents has been deleted` })
+//             : res.json({ message: 'No documents found' });
+//     } catch (error) {
+//         console.error('Room findByUserId delete error', error);
+//         res.status(400).json({ message: error.message });
+//     }
+// }
 
 async function roomGet(req, res) {
     try {
@@ -106,36 +105,36 @@ async function roomUpdate(req, res) {
     }
 }
 
-async function roomDelete(req, res) {
-    try {
-        const id = req.params.id;
-        const data = await Room.findByIdAndDelete(id);
-        res.json({ message: `Document with ${data._id} has been deleted` });
-    } catch (error) {
-        console.error('Room delete error', error);
-        res.status(400).json({ message: error.message });
-    }
-}
+// async function roomDelete(req, res) {
+//     try {
+//         const id = req.params.id;
+//         const data = await Room.findByIdAndDelete(id);
+//         res.json({ message: `Document with ${data._id} has been deleted` });
+//     } catch (error) {
+//         console.error('Room delete error', error);
+//         res.status(400).json({ message: error.message });
+//     }
+// }
 
-async function roomDeleteALL(req, res) {
-    return res.json({ message: '⚠️ Route disabled' });
-    try {
-        const data = await Room.deleteMany();
-        data.deletedCount > 0
-            ? res.json({ message: `${data.deletedCount} documents has been deleted` })
-            : res.json({ message: 'No documents found' });
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
-}
+// async function roomDeleteALL(req, res) {
+//     return res.json({ message: '⚠️ Route disabled' });
+//     try {
+//         const data = await Room.deleteMany();
+//         data.deletedCount > 0
+//             ? res.json({ message: `${data.deletedCount} documents has been deleted` })
+//             : res.json({ message: 'No documents found' });
+//     } catch (error) {
+//         res.status(400).json({ message: error.message });
+//     }
+// }
 
 module.exports = {
     roomCreate,
     roomFindBy,
-    roomDeleteFindBy,
+    // roomDeleteFindBy,
     roomGet,
     roomUpdate,
-    roomDelete,
-    roomDeleteALL,
+    // roomDelete,
+    // roomDeleteALL,
     getUserRole,
 };

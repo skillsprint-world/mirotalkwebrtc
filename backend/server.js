@@ -11,7 +11,7 @@ const api = require('./routes/api');
 const room = require('./routes/room');
 const sms = require('./routes/sms');
 const users = require('./routes/users');
-const config = require('./config');
+// const config = require('./config');
 const path = require('path');
 const sentry = require('@sentry/node');
 const { CaptureConsole } = require('@sentry/integrations');
@@ -93,10 +93,10 @@ mongoose
         //     res.sendFile(client);
         // });
 
-        app.get('/config', auth, (req, res) => {
-            console.log('Send config', config);
-            res.status(200).json(config);
-        });
+        // app.get('/config', auth, (req, res) => {
+        //     console.log('Send config', config);
+        //     res.status(200).json(config);
+        // });
 
         app.use('*', (req, res) => {
             res.status(404).json({ message: 'Page not found' });

@@ -3,7 +3,6 @@
 const mongoose = require('mongoose');
 
 const roomSchema = new mongoose.Schema({
-    userId: { type: String, unique: false },
     room: { type: String },
     type: { type: String, enum: ['P2P', 'SFU', 'C2C', 'BRO'] },
     hostUserID: [{ type: String, required: true, ref: 'creatorPublicSchema' }],
