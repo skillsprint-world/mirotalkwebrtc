@@ -11,7 +11,7 @@ const api = require('./routes/api');
 const room = require('./routes/room');
 const sms = require('./routes/sms');
 const users = require('./routes/users');
-// const config = require('./config');
+const config = require('./config');
 const path = require('path');
 const sentry = require('@sentry/node');
 const { CaptureConsole } = require('@sentry/integrations');
@@ -80,10 +80,10 @@ mongoose
             next();
         });
 
-        app.use(apiPath, api);
+        // app.use(apiPath, api);
         app.use(apiPath, room);
-        app.use(apiPath, sms);
-        app.use(apiPath, users);
+        // app.use(apiPath, sms);
+        // app.use(apiPath, users);
 
         // app.get('/', (req, res) => {
         //     res.sendFile(login);
@@ -97,7 +97,11 @@ mongoose
         //     console.log('Send config', config);
         //     res.status(200).json(config);
         // });
-
+        app.use((err, req, res, next) => {
+            console.error(err.stack);
+            res.status(500).send('Something broke!');
+        });
+        
         app.use('*', (req, res) => {
             res.status(404).json({ message: 'Page not found' });
         });

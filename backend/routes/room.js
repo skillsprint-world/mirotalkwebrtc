@@ -7,8 +7,9 @@ const validator = require('../middleware/validator');
 const router = express.Router();
 const controllersRooms = require('../controllers/rooms');
 
-//GET: /api/v1/room/findRole/room/userId
-router.post('/room/findRole/:room/:userId', auth, (req, res) => {
+//post: /api/v1/room/
+router.post('/room/findRole/', auth, (req, res) => {
+    console.log('Inside /room/findRole/ route');
     controllersRooms.getUserRole(req, res);
 });
 

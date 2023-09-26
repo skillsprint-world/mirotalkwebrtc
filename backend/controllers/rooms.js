@@ -33,8 +33,9 @@ async function roomCreate(req, res) {
 
 async function getUserRole(req, res) {
     try {
-        const data = await Room.find({ room: req.params.room, status: "scheduled" });
-        // res.json(req.params.userId );
+        const { roomNm, userId } = req.body;
+        const data = await Room.find({ roomNm: roomNm }); //, status: "scheduled" 
+        // res.json(req.body.userId );
         if (data.length === 0) {
             console.error('Room Does Not Exist');
             res.json('Please check the Meeting Link');
@@ -42,10 +43,10 @@ async function getUserRole(req, res) {
         } else {
             const room = data[0];
             // res.json(data);
-            if (room.hostUserID.includes(req.params.userId)) {
+            if (room.hostUserID.includes(userId)) {
                 // user_id is part of host
                 res.json({'Allowed':true , role: 'host' });
-            } else if (room.clientUserID.includes(req.params.userId)) {
+            } else if (room.clientUserID.includes(userId)) {
                 // user_id is part of client
                 res.json({ 'Allowed':true , role: 'client' });
             } else {
