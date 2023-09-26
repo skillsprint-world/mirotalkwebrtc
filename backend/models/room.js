@@ -1,29 +1,33 @@
 'use-strict';
 
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const roomSchema = new mongoose.Schema({
-    room: { type: String },
-    type: { type: String, enum: ['P2P', 'SFU', 'C2C', 'BRO'] },
-    hostUserID: [{ type: String, required: true, ref: 'creatorPublicSchema' }],
-    clientUserID: [{ type: String, required: true, ref: 'consumerSchema' }],
+const roomSchema = new Schema({
+    type: { type: String, required: true, enum: ["1:1", "MultiMeet", "EchoEvent"] },
+    roomNm: { type: String, required: true },
+    hostUserID: [
+      { type: String, required: true },
+    ],
+    clientUserID: [
+      { type: String, required: true },
+    ],
     startDateTime: { type: String, required: true },
     endDateTime: { type: String, required: true },
+    timeZone: { type: String, required: true },
     status: { type: String, required: true },
 });
 
+
+
 module.exports = mongoose.model('Room', roomSchema);
 
-// var one_to_one_bookings = new Schema({
-//     host: [
-//       { type: Schema.Types.ObjectId, required: true, ref: "creatorPublicSchema" },
-//     ],
-//     client: [
-//       { type: Schema.Types.ObjectId, required: true, ref: "consumerSchema" },
-//     ],
-//     meeting_link: { type: String, required: true },
-//     start_time: { type: Date, required: true },
-//     end_time: { type: Date, required: true },
-//     expiryMeetingLinkDate: { type: Date, required: true },
-//     isExpired: { type: Boolean, required: true },
-//   });
+// const roomSchema = new mongoose.Schema({
+//     room: { type: String },
+//     type: { type: String, enum: ['P2P', 'SFU', 'C2C', 'BRO'] },
+//     hostUserID: [{ type: String, required: true, ref: 'creatorPublicSchema' }],
+//     clientUserID: [{ type: String, required: true, ref: 'consumerSchema' }],
+//     startDateTime: { type: String, required: true },
+//     endDateTime: { type: String, required: true },
+//     status: { type: String, required: true },
+// });

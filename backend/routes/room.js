@@ -8,7 +8,7 @@ const router = express.Router();
 const controllersRooms = require('../controllers/rooms');
 
 //GET: /api/v1/room/findRole/room/userId
-router.get('/room/findRole/:room/:userId', auth, (req, res) => {
+router.post('/room/findRole/:room/:userId', auth, (req, res) => {
     controllersRooms.getUserRole(req, res);
 });
 

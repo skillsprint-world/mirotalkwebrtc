@@ -11,17 +11,18 @@ function getUUID4() {
 
 async function roomCreate(req, res) {
     try {
-        // const { userId, type, tag, username, phone, date, time, room } = req.body;
-        const {  type, hostUserID, clientUserID, startDateTime, endDateTime, status } = req.body;
+        const {  type, hostUserID, clientUserID, startDateTime, endDateTime, status,timeZone } = req.body;
         const data = new Room({
             type: type,
+            roomNm: getUUID4(),
             hostUserID: hostUserID,
             clientUserID: clientUserID,
             startDateTime: startDateTime,
             endDateTime: endDateTime,
-            status: status,
-            room: getUUID4(),
+            timeZone: timeZone,
+            status: status
         });
+        
         const dataToSave = await data.save();
         res.status(200).json(dataToSave);
     } catch (error) {
@@ -36,26 +37,26 @@ async function getUserRole(req, res) {
         // res.json(req.params.userId );
         if (data.length === 0) {
             console.error('Room Does Not Exist');
-            res.json(data);
+            res.json('Please check the Meeting Link');
             res.status(404);
         } else {
             const room = data[0];
             // res.json(data);
             if (room.hostUserID.includes(req.params.userId)) {
                 // user_id is part of host
-                res.json({ role: 'host' });
+                res.json({'Allowed':true , role: 'host' });
             } else if (room.clientUserID.includes(req.params.userId)) {
                 // user_id is part of client
-                res.json({ role: 'client' });
+                res.json({ 'Allowed':true , role: 'client' });
             } else {
                 // user_id isn't part of host or client
                 console.error('Not authorized to enter the meeting');
-                res.status(401).json({ message: 'Unauthorized' });
+                res.status(401).json({ 'Allowed':false , message: 'Unauthorized' });
             }
         }
     } catch (error) {
         console.error('Room findById error', error);
-        res.status(400).json({ message: error.message });
+        res.status(400).json({ 'Allowed':false ,message: error.message });
     }
 }
 
